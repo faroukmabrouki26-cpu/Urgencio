@@ -9,9 +9,9 @@ class ServiceInline(admin.TabularInline):
 
 @admin.register(Hospital)
 class HospitalAdmin(admin.ModelAdmin):
-    list_display = ('name', 'city', 'phone', 'is_any_service_available')
-    list_filter = ('city',)
-    search_fields = ('name', 'city', 'address')
+    list_display = ('name', 'arrondissement', 'phone', 'is_any_service_available')
+    list_filter = ('arrondissement',)
+    search_fields = ('name', 'address')
     inlines = [ServiceInline]
 
     def is_any_service_available(self, obj):
@@ -23,5 +23,5 @@ class HospitalAdmin(admin.ModelAdmin):
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ('name', 'hospital', 'is_available', 'queue_count', 'estimated_wait_time', 'last_updated')
-    list_filter = ('is_available', 'hospital')
-    search_fields = ('name', 'hospital__name')
+    list_filter = ('name', 'is_available', 'hospital')
+    search_fields = ('hospital__name',)

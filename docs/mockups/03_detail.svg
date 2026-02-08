@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#f4f1ec"/>
+  <rect x="40" y="30" width="1120" height="60" rx="12" fill="#1f2a2e"/>
+  <text x="70" y="68" font-family="Verdana" font-size="24" fill="#f4f1ec">Urgencio — Hôpital Saint-Antoine</text>
+
+  <rect x="40" y="110" width="1120" height="90" rx="14" fill="#ffffff" stroke="#1f2a2e"/>
+  <text x="70" y="150" font-family="Verdana" font-size="16" fill="#1f2a2e">Paris • Téléphone: 01 00 00 00 00</text>
+  <text x="70" y="175" font-family="Verdana" font-size="12" fill="#526066">Adresse: 123 Rue Exemple, 75000 Paris</text>
+
+  <rect x="40" y="220" width="1120" height="420" rx="16" fill="#ffffff" stroke="#1f2a2e"/>
+  <text x="70" y="260" font-family="Verdana" font-size="18" fill="#1f2a2e">Services</text>
+
+  <rect x="70" y="290" width="1060" height="40" fill="#e7edf0"/>
+  <text x="90" y="316" font-family="Verdana" font-size="12" fill="#1f2a2e">Service</text>
+  <text x="470" y="316" font-family="Verdana" font-size="12" fill="#1f2a2e">Disponibilité</text>
+  <text x="720" y="316" font-family="Verdana" font-size="12" fill="#1f2a2e">File</text>
+  <text x="880" y="316" font-family="Verdana" font-size="12" fill="#1f2a2e">Temps estimé</text>
+
+  <rect x="70" y="330" width="1060" height="60" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="90" y="365" font-family="Verdana" font-size="14" fill="#1f2a2e">Urgences</text>
+  <text x="470" y="365" font-family="Verdana" font-size="14" fill="#2e8b57">Disponible</text>
+  <text x="720" y="365" font-family="Verdana" font-size="14" fill="#1f2a2e">6</text>
+  <text x="880" y="365" font-family="Verdana" font-size="14" fill="#1f2a2e">30 min</text>
+
+  <rect x="70" y="390" width="1060" height="60" fill="#f5f6f7" stroke="#d0d7de"/>
+  <text x="90" y="425" font-family="Verdana" font-size="14" fill="#1f2a2e">Cardiologie</text>
+  <text x="470" y="425" font-family="Verdana" font-size="14" fill="#c0392b">Indisponible</text>
+  <text x="720" y="425" font-family="Verdana" font-size="14" fill="#1f2a2e">0</text>
+  <text x="880" y="425" font-family="Verdana" font-size="14" fill="#1f2a2e">—</text>
+
+  <rect x="70" y="450" width="1060" height="60" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="90" y="485" font-family="Verdana" font-size="14" fill="#1f2a2e">Pédiatrie</text>
+  <text x="470" y="485" font-family="Verdana" font-size="14" fill="#2e8b57">Disponible</text>
+  <text x="720" y="485" font-family="Verdana" font-size="14" fill="#1f2a2e">3</text>
+  <text x="880" y="485" font-family="Verdana" font-size="14" fill="#1f2a2e">20 min</text>
+</svg>

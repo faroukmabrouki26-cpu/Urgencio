@@ -1,26 +1,36 @@
 {% extends 'hospitals/base.html' %}
 
-{% block title %}Liste des hôpitaux — Urgencio{% endblock %}
+{% block title %}Hôpitaux — Urgencio{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">Liste des hôpitaux</h1>
+<h1 class="mb-4">Hôpitaux avec urgences à Paris</h1>
 
 <div class="row mb-4">
-    <div class="col-md-6">
-        <form method="get" class="d-flex gap-2">
-            <input type="text" name="q" class="form-control" placeholder="Rechercher un hôpital..."
-                   value="{{ search_query }}">
-            <select name="city" class="form-select" style="max-width: 200px;">
-                <option value="">Toutes les villes</option>
-                {% for city in cities %}
-                    <option value="{{ city }}" {% if city == current_city %}selected{% endif %}>{{ city }}</option>
+    <div class="col-12">
+        <form method="get" class="d-flex flex-wrap gap-2">
+            <input type="text" name="q" class="form-control" style="max-width: 250px;"
+                   placeholder="Rechercher un hôpital..." value="{{ search_query }}">
+            <select name="arrondissement" class="form-select" style="max-width: 180px;">
+                <option value="">Arrondissement</option>
+                {% for arr in arrondissements %}
+                    <option value="{{ arr }}" {% if arr == current_arrondissement %}selected{% endif %}>{{ arr }}e</option>
+                {% endfor %}
+            </select>
+            <select name="type" class="form-select" style="max-width: 280px;">
+                <option value="">Type d'urgence</option>
+                {% for value, label in type_choices %}
+                    <option value="{{ value }}" {% if value == current_type %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>
             <button type="submit" class="btn btn-primary">Filtrer</button>
+            {% if search_query or current_arrondissement or current_type %}
+                <a href="{% url 'hospital_list' %}" class="btn btn-outline-secondary">Réinitialiser</a>
+            {% endif %}
         </form>
     </div>
 </div>
 
+<div class="scroll-area">
 <div class="row">
     {% for hospital in hospitals %}
     <div class="col-md-6 col-lg-4 mb-4">
@@ -28,7 +38,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{ hospital.name }}</h5>
                 <p class="card-text">
-                    <strong>Ville :</strong> {{ hospital.city }}<br>
+                    <strong>Arrondissement :</strong> {{ hospital.arrondissement }}e<br>
                     <strong>Adresse :</strong> {{ hospital.address }}<br>
                     {% if hospital.phone %}
                         <strong>Tél :</strong> {{ hospital.phone }}
@@ -41,8 +51,8 @@
                         <span class="badge bg-danger">Aucun service disponible</span>
                     {% endif %}
                 </div>
-                <p class="text-muted small">
-                    {{ hospital.services.count }} service{{ hospital.services.count|pluralize }}
+                <p class="text-muted small mb-0">
+                    {{ hospital.services.count }} service{{ hospital.services.count|pluralize }} d'urgence
                 </p>
             </div>
             <div class="card-footer bg-transparent">
@@ -54,8 +64,9 @@
     </div>
     {% empty %}
     <div class="col-12">
-        <div class="alert alert-info">Aucun hôpital trouvé.</div>
+        <div class="alert alert-info">Aucun hôpital trouvé avec ces critères.</div>
     </div>
     {% endfor %}
+</div>
 </div>
 {% endblock %}

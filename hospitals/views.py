@@ -1,48 +1,54 @@
 import json
+import logging
+from urllib.parse import urlencode
+from urllib.request import urlopen
 
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import ServiceUpdateForm
 from .models import Hospital, Service
+from .utils import haversine
+
+logger = logging.getLogger(__name__)
+
+OPENDATASOFT_API_URL = (
+    "https://data.iledefrance.fr/api/explore/v2.1/catalog/datasets/"
+    "les_etablissements_hospitaliers_franciliens/records"
+)
 
 
 def home(request):
-    hospitals = Hospital.objects.prefetch_related('services').all()
-    hospitals_json = json.dumps([
-        {
-            'id': h.id,
-            'name': h.name,
-            'city': h.city,
-            'lat': h.latitude,
-            'lng': h.longitude,
-            'available': h.is_any_service_available(),
-        }
-        for h in hospitals
-    ])
-    return render(request, 'hospitals/home.html', {
-        'hospitals': hospitals,
-        'hospitals_json': hospitals_json,
-    })
+    return render(request, 'hospitals/home.html')
 
 
 def hospital_list(request):
     hospitals = Hospital.objects.prefetch_related('services').all()
-    city = request.GET.get('city', '').strip()
+    arrondissement = request.GET.get('arrondissement', '').strip()
+    type_urgence = request.GET.get('type', '').strip()
     search = request.GET.get('q', '').strip()
-    if city:
-        hospitals = hospitals.filter(city__icontains=city)
+
+    if arrondissement:
+        hospitals = hospitals.filter(arrondissement=arrondissement)
+    if type_urgence:
+        hospitals = hospitals.filter(services__name=type_urgence).distinct()
     if search:
         hospitals = hospitals.filter(name__icontains=search)
-    cities = Hospital.objects.values_list('city', flat=True).distinct().order_by('city')
+
+    arrondissements = Hospital.objects.values_list('arrondissement', flat=True).distinct().order_by('arrondissement')
+    hospitals = hospitals[:30]
+
     return render(request, 'hospitals/hospital_list.html', {
         'hospitals': hospitals,
-        'cities': cities,
-        'current_city': city,
+        'arrondissements': arrondissements,
+        'current_arrondissement': arrondissement,
+        'current_type': type_urgence,
         'search_query': search,
+        'type_choices': Service.TYPE_CHOICES,
     })
 
 
@@ -98,3 +104,56 @@ def dashboard(request):
         'hospital': hospital,
         'formset': formset,
     })
+
+
+def nearest_hospitals(request):
+    """Endpoint JSON : renvoie les hôpitaux IDF les plus proches via l'API Opendatasoft."""
+    try:
+        lat = float(request.GET.get('lat', ''))
+        lon = float(request.GET.get('lon', ''))
+    except (ValueError, TypeError):
+        return JsonResponse({'error': 'Paramètres lat et lon requis.'}, status=400)
+
+    limit = min(int(request.GET.get('limit', 10)), 50)
+
+    # Requête vers l'API Opendatasoft — filtrer sur Paris (dept 75)
+    params = urlencode({
+        'limit': 100,
+        'where': 'num_dept=75',
+        'select': 'raison_sociale,adresse_complete,cp_ville,num_tel,categorie_de_l_etablissement,lat,lng',
+    })
+    url = f"{OPENDATASOFT_API_URL}?{params}"
+
+    try:
+        with urlopen(url, timeout=10) as resp:
+            data = json.loads(resp.read().decode())
+    except Exception as e:
+        logger.error("Erreur API Opendatasoft: %s", e)
+        return JsonResponse({'error': "Impossible de contacter l'API externe."}, status=502)
+
+    results = []
+    for record in data.get('results', []):
+        r_lat = record.get('lat')
+        r_lng = record.get('lng')
+        if r_lat is None or r_lng is None:
+            continue
+        try:
+            r_lat = float(r_lat)
+            r_lng = float(r_lng)
+        except (ValueError, TypeError):
+            continue
+
+        distance = haversine(lat, lon, r_lat, r_lng)
+        results.append({
+            'name': record.get('raison_sociale', ''),
+            'address': record.get('adresse_complete', '') or '',
+            'city': record.get('cp_ville', ''),
+            'phone': record.get('num_tel', '') or '',
+            'category': record.get('categorie_de_l_etablissement', ''),
+            'lat': r_lat,
+            'lng': r_lng,
+            'distance_km': round(distance, 2),
+        })
+
+    results.sort(key=lambda x: x['distance_km'])
+    return JsonResponse({'hospitals': results[:limit]})

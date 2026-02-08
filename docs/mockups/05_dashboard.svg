@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#f4f1ec"/>
+  <rect x="40" y="30" width="1120" height="60" rx="12" fill="#1f2a2e"/>
+  <text x="70" y="68" font-family="Verdana" font-size="24" fill="#f4f1ec">Urgencio — Dashboard</text>
+
+  <rect x="40" y="110" width="1120" height="80" rx="14" fill="#ffffff" stroke="#1f2a2e"/>
+  <text x="70" y="150" font-family="Verdana" font-size="16" fill="#1f2a2e">Mise à jour des services — Hôpital Saint-Antoine</text>
+
+  <rect x="40" y="210" width="1120" height="390" rx="16" fill="#ffffff" stroke="#1f2a2e"/>
+  <text x="70" y="250" font-family="Verdana" font-size="18" fill="#1f2a2e">Formulaire</text>
+
+  <rect x="70" y="280" width="1060" height="50" fill="#e7edf0"/>
+  <text x="90" y="312" font-family="Verdana" font-size="12" fill="#1f2a2e">Service</text>
+  <text x="470" y="312" font-family="Verdana" font-size="12" fill="#1f2a2e">Disponible</text>
+  <text x="700" y="312" font-family="Verdana" font-size="12" fill="#1f2a2e">File</text>
+  <text x="860" y="312" font-family="Verdana" font-size="12" fill="#1f2a2e">Temps estimé</text>
+
+  <rect x="70" y="330" width="1060" height="60" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="90" y="365" font-family="Verdana" font-size="14" fill="#1f2a2e">Urgences</text>
+  <rect x="480" y="345" width="20" height="20" rx="3" fill="#2e8b57"/>
+  <rect x="690" y="345" width="60" height="30" rx="6" fill="#e7edf0" stroke="#1f2a2e"/>
+  <text x="705" y="365" font-family="Verdana" font-size="12" fill="#1f2a2e">6</text>
+  <rect x="860" y="345" width="90" height="30" rx="6" fill="#e7edf0" stroke="#1f2a2e"/>
+  <text x="872" y="365" font-family="Verdana" font-size="12" fill="#1f2a2e">30 min</text>
+
+  <rect x="70" y="390" width="1060" height="60" fill="#f5f6f7" stroke="#d0d7de"/>
+  <text x="90" y="425" font-family="Verdana" font-size="14" fill="#1f2a2e">Cardiologie</text>
+  <rect x="480" y="405" width="20" height="20" rx="3" fill="#c0392b"/>
+  <rect x="690" y="405" width="60" height="30" rx="6" fill="#e7edf0" stroke="#1f2a2e"/>
+  <text x="705" y="425" font-family="Verdana" font-size="12" fill="#1f2a2e">0</text>
+  <rect x="860" y="405" width="90" height="30" rx="6" fill="#e7edf0" stroke="#1f2a2e"/>
+  <text x="890" y="425" font-family="Verdana" font-size="12" fill="#1f2a2e">—</text>
+
+  <rect x="70" y="450" width="1060" height="60" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="90" y="485" font-family="Verdana" font-size="14" fill="#1f2a2e">Pédiatrie</text>
+  <rect x="480" y="465" width="20" height="20" rx="3" fill="#2e8b57"/>
+  <rect x="690" y="465" width="60" height="30" rx="6" fill="#e7edf0" stroke="#1f2a2e"/>
+  <text x="705" y="485" font-family="Verdana" font-size="12" fill="#1f2a2e">3</text>
+  <rect x="860" y="465" width="90" height="30" rx="6" fill="#e7edf0" stroke="#1f2a2e"/>
+  <text x="872" y="485" font-family="Verdana" font-size="12" fill="#1f2a2e">20 min</text>
+
+  <rect x="40" y="620" width="200" height="44" rx="10" fill="#1f2a2e"/>
+  <text x="70" y="648" font-family="Verdana" font-size="12" fill="#f4f1ec">Mettre à jour</text>
+</svg>
