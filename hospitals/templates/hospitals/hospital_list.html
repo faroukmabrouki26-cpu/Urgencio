@@ -1,0 +1,61 @@
+{% extends 'hospitals/base.html' %}
+
+{% block title %}Liste des hôpitaux — Urgencio{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Liste des hôpitaux</h1>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form method="get" class="d-flex gap-2">
+            <input type="text" name="q" class="form-control" placeholder="Rechercher un hôpital..."
+                   value="{{ search_query }}">
+            <select name="city" class="form-select" style="max-width: 200px;">
+                <option value="">Toutes les villes</option>
+                {% for city in cities %}
+                    <option value="{{ city }}" {% if city == current_city %}selected{% endif %}>{{ city }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    {% for hospital in hospitals %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card hospital-card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ hospital.name }}</h5>
+                <p class="card-text">
+                    <strong>Ville :</strong> {{ hospital.city }}<br>
+                    <strong>Adresse :</strong> {{ hospital.address }}<br>
+                    {% if hospital.phone %}
+                        <strong>Tél :</strong> {{ hospital.phone }}
+                    {% endif %}
+                </p>
+                <div class="mb-2">
+                    {% if hospital.is_any_service_available %}
+                        <span class="badge bg-success">Services disponibles</span>
+                    {% else %}
+                        <span class="badge bg-danger">Aucun service disponible</span>
+                    {% endif %}
+                </div>
+                <p class="text-muted small">
+                    {{ hospital.services.count }} service{{ hospital.services.count|pluralize }}
+                </p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <a href="{% url 'hospital_detail' hospital.pk %}" class="btn btn-primary btn-sm w-100">
+                    Voir les détails
+                </a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">Aucun hôpital trouvé.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

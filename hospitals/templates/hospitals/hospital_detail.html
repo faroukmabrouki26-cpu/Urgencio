@@ -1,0 +1,73 @@
+{% extends 'hospitals/base.html' %}
+
+{% block title %}{{ hospital.name }} — Urgencio{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Accueil</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'hospital_list' %}">Hôpitaux</a></li>
+        <li class="breadcrumb-item active">{{ hospital.name }}</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-8">
+        <h1>{{ hospital.name }}</h1>
+        <p class="text-muted">
+            {{ hospital.address }}, {{ hospital.city }}
+            {% if hospital.phone %} — Tél : {{ hospital.phone }}{% endif %}
+        </p>
+    </div>
+    <div class="col-md-4 text-md-end">
+        {% if hospital.is_any_service_available %}
+            <span class="badge bg-success fs-6 p-2">Services disponibles</span>
+        {% else %}
+            <span class="badge bg-danger fs-6 p-2">Aucun service disponible</span>
+        {% endif %}
+    </div>
+</div>
+
+<hr>
+
+<h2 class="mb-3">Services</h2>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Service</th>
+                <th>Disponibilité</th>
+                <th>Patients en attente</th>
+                <th>Temps d'attente estimé</th>
+                <th>Dernière mise à jour</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in hospital.services.all %}
+            <tr>
+                <td><strong>{{ service.name }}</strong></td>
+                <td>
+                    {% if service.is_available %}
+                        <span class="badge bg-success">Disponible</span>
+                    {% else %}
+                        <span class="badge bg-danger">Indisponible</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="badge bg-{{ service.queue_count|yesno:'warning,secondary' }}">
+                        {{ service.queue_count }} patient{{ service.queue_count|pluralize }}
+                    </span>
+                </td>
+                <td>{{ service.estimated_wait_time }} min</td>
+                <td class="text-muted">{{ service.last_updated|timesince }} ago</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center text-muted">Aucun service enregistré.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

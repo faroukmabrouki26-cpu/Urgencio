@@ -1,0 +1,55 @@
+{% extends 'hospitals/base.html' %}
+
+{% block title %}Dashboard — {{ hospital.name }}{% endblock %}
+
+{% block content %}
+<h1 class="mb-3">Dashboard — {{ hospital.name }}</h1>
+<p class="text-muted">Mettez à jour la disponibilité et le nombre de patients en attente pour vos services.</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ formset.management_form }}
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Service</th>
+                    <th>Disponible</th>
+                    <th>Patients en attente</th>
+                    <th>Temps d'attente (min)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for form in formset %}
+                    {{ form.id }}
+                    <tr>
+                        <td>
+                            <strong>{{ form.instance.name }}</strong>
+                        </td>
+                        <td class="text-center">
+                            {{ form.is_available }}
+                        </td>
+                        <td>
+                            {{ form.queue_count }}
+                        </td>
+                        <td>
+                            {{ form.estimated_wait_time }}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">
+                            Aucun service. Contactez l'administrateur pour ajouter des services.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if formset.forms %}
+        <button type="submit" class="btn btn-success btn-lg">Mettre à jour</button>
+    {% endif %}
+</form>
+{% endblock %}
